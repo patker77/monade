@@ -1,12 +1,16 @@
 package com.josephnzi.monade.config;
 
 import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +22,7 @@ import java.io.InputStream;
 
 @Configuration
 @EnableWebSecurity
-
+@AllArgsConstructor
 public class SecurityConfig {
 
     @Bean
@@ -33,6 +37,11 @@ public class SecurityConfig {
 
 
         return http.build();
+    }
+    @Autowired
+    public void globalConfig(AuthenticationManagerBuilder authenticationManagerBuilder){
+        authenticationManagerBuilder.userDetailsService(userDetailSevervice)
+                .passwordEncoder(passwordEncoder());
     }
 
     @Bean
