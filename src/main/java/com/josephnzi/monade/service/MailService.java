@@ -11,16 +11,18 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 @Slf4j
 public class MailService {
 
     private final JavaMailSender mailSender;
     private final MailBuilder mailBuilder;
-    public void sendEmail(NotificationEmail notificationEmail) throws EmailException {
+    @Async
+   void sendEmail(NotificationEmail notificationEmail) throws EmailException {
         MimeMessagePreparator messagePreparator = mimeMessage ->{
                 MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
                 messageHelper.setFrom("verify@monade.com");
